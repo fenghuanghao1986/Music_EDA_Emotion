@@ -1,0 +1,9 @@
+Average accuracy: 0.568276 
+Average auc: 0.593151 
+Average precision: 0.556366 
+Average recall: 0.691724 
+Std of accuracy: 0.070042 
+Variance of accuracy: 0.004906 
+Median of accuracy: 0.568966 
+Max accuracy: 0.741379 
+Min accuracy: 0.327586

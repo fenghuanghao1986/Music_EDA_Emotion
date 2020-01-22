@@ -1,0 +1,13 @@
+good =
+
+    20
+
+Average accuracy: 0.615805 
+Average auc: 0.637396 
+Average precision: 0.599227 
+Average recall: 0.713218 
+Std of accuracy: 0.075640 
+Variance of accuracy: 0.005721 
+Median of accuracy: 0.620690 
+Max accuracy: 0.793103 
+Min accuracy: 0.431034

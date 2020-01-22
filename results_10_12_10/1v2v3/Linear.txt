@@ -1,0 +1,10 @@
+good =
+
+    80
+
+Average accuracy: 0.519665 
+Std of accuracy: 0.056163 
+Variance of accuracy: 0.003154 
+Median of accuracy: 0.517241 
+Max accuracy: 0.724138 
+Min accuracy: 0.344828 

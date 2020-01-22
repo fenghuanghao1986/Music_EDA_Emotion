@@ -1,0 +1,7 @@
+Average accuracy: 0.535705 
+Std of accuracy: 0.053751 
+Variance of accuracy: 0.002889 
+Median of accuracy: 0.540230 
+Max accuracy: 0.701149 
+Min accuracy: 0.379310 
+75/729 over 0.6
