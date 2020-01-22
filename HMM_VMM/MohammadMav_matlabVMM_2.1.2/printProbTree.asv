@@ -1,0 +1,52 @@
+% A simple hands-on tutorial
+% Browse the code to get the basics of how-to utilize this VMM tool
+
+clear all
+
+global T
+
+verbose = 0;
+m = 0;
+k =18; % smoothing factor
+delay = 0; %starting point delay in coding
+
+T = 6;
+m = m + 1;
+n = 0;
+ds = 18;
+k = ds;
+n = n + 1;
+epis = 1; % FF = 1, SF = 2, RE = 3;
+[seqTD, seqASD]=readDataSeqKdx(ds, T, epis, k, delay);
+
+createParams;
+
+% use AB with size = 5
+disp('---------------------------------------------------');
+if (verbose == 1), disp('working with AB={A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P }'); end
+disp('---------------------------------------------------');
+s = 3;
+% 3. run each of the VMM algorithms
+if (verbose == 1), disp(sprintf('Working with %s', 'PPMC' )); end
+%     disp('--------')
+jVmmASD_full = vmm_createNew(map(ab, seqASD),  ALGS{s}, paramsASD);
+jVmmTD_full = vmm_createNew(map(ab, seqTD),  ALGS{s}, paramsTD);
+for a=1:length(ab)-1
+disp(sprintf('Pr(a) = %f', vmm_getPr(jVmmTD_LOSO, mapS(ab,'A'))));
+end
+% disp(sprintf('Pr(B | A) = %f', vmm_getPr(jVmm, mapS(ab,'B'), mapS(ab,'A'))));
+
+
+% test TD sequences versus two models: model_1: TD_LOSO; model_2:
+% ASD_full
+for i = 1:length(seqTD)
+    jVmmTD_LOSO = vmm_createLOSO(map(ab, seqTD),  ALGS{s}, i,  paramsTD);
+    logLikTD(i,1) = vmm_logEval(jVmmTD_LOSO,mapS(ab, seqTD{i}.se));
+    logLikTD(i,2) = vmm_logEval(jVmmASD_full,mapS(ab, seqTD{i}.se));
+    if (verbose == 1) ,   disp([ logLikTD(i,1), logLikTD(i,2), round((logLikTD(i,1) - logLikTD(i,2))*100)/100]); end
+    clear jVmmTD_LOSO
+    
+end
+
+
+%save resultsKDX.mat resultsASD resultsTD

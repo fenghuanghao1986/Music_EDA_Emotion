@@ -1,0 +1,46 @@
+% A simple hands-on tutorial 
+% Browse the code to get the basics of how-to utilize this VMM tool
+
+clear
+% 1. defining sequence and its alphabet
+% seq{1} = 'AAAHMDPIAAAAAAAAAAABMAAAAAAAAAAAABPPDPAAAHOAAAPMHPPMPMADPPPPMAPMDPPPAAAAAAAAAAAAAAAADAAAAAAAAGAMPMAAAIABIAAHBPPHIPIDPPPAAAHJPPIODMAA';
+seq{2} = 'MMMHMDPIMMMMMMMMMMMBMMMMMMMMAAAAABPPDPAAAHOAAAPMHPPMPMADPPPPMPPMDPPPPPPPPPPPPPPPPPPPDPPPPPPPPGPMPMPAAIABIAAHBPPHIPIDPPPAAAHJPPIODMAA';
+seq{1}= 'MMMHMDPIMMMMMMMMMMMBMMMMMMMMAAAAABPPDPAAAHOAAPPHIPIDPPPAAAHJPPIODMAA';
+ab = alphabet('ABCDEFGHIJKLMNOP');
+
+% 2. testing all algs; param values ~match "best" values for text data (see
+% tbl.8 in VMM paper)
+ALGS = {'LZms', 'LZ78', 'PPMC', 'DCTW', 'BinaryCTW', 'PST'};
+params.ab_size = size(ab);
+params.d = 5;
+params.m = 2;
+params.s = 8;
+params.pMin = 0.006;
+params.alpha= 0;
+params.gamma = 0.0006;
+params.r = 1.05;
+params.vmmOrder = params.d;
+
+% use AB with size = 5
+disp('---------------------------------------------------');
+disp('working with AB={A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P }');
+disp('---------------------------------------------------');
+disp(' ');
+
+% 3. run each of the VMM algorithms
+for i=3 %i=1:length(ALGS),
+    disp(sprintf('Working with %s', ALGS{i} ));
+    disp('--------')
+    jVmm = vmm_createNew(map(ab, seq),  ALGS{i}, params);
+
+    disp(sprintf('Pr(A | A) = %f', vmm_getPr(jVmm, mapS(ab,'A'), mapS(ab,'A'))));
+    disp(sprintf('Pr(M | B) = %f', vmm_getPr(jVmm, mapS(ab,'B'), mapS(ab,'A'))));
+    disp(sprintf('Pr(C | A) = %f', vmm_getPr(jVmm, mapS(ab,'C'), mapS(ab,'A'))));
+    disp(sprintf('Pr(D | A) = %f', vmm_getPr(jVmm, mapS(ab,'D'), mapS(ab,'A'))));
+    disp(sprintf('Pr(E | A) = %f', vmm_getPr(jVmm, mapS(ab,'E'), mapS(ab,'A'))));
+    disp(sprintf('Pr(F | A) = %f', vmm_getPr(jVmm, mapS(ab,'F'), mapS(ab,'A'))));
+      
+disp(sprintf('-lg(Pr(AAAHMDPIAAAAAAAAAAABMAAAAAAAAAAAABPPDPAAAHOAAAPMHPPMPMADPPPPMAPMDPPPAAAAAAAAAAAAAAAADAAAAAAAAGAMPMAAAIABIAAHBPPHIPIDPPPAAAHJPPIODMAA))=%f', vmm_logEval(jVmm,mapS(ab, 'PPDMAAAHPPMAAAAAABPPPPMADPPPPPPDMAAAPPPPPPPPPPPPPJMAHIDIAAAPPAMAABPAHAPOHIAAAMAAAAAAAAAHPPIAPPHODPPIAAAAAADPPPPPIHPPDPPPDOAAAABIDPPPPMA'))));
+    disp('--------')
+    disp(' ');
+end

@@ -1,0 +1,5 @@
+2.1.2 (04/2008)
+-----
+ * 'CreateVmm(..)' ducomentation fix: PST uses 'd' hyper-param; consistent 'ab_size' for all algs
+ * 'simple_runner' : remove "params.vmm_order" and "params.abSize" (unreferenced indetifiers)
+ * added html docs (online)

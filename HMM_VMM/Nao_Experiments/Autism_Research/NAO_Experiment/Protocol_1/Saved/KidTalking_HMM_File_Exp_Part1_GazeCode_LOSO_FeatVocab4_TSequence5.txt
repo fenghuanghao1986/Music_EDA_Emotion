@@ -1,0 +1,51 @@
+HMM RESULTS:Part 1 TD(1) and ASD(2) Classification using the manually coded  
+HMM: Frame Rate video for gaze analysis is set to = 7fps, HMM T_Seq=5 
+HMM RESULTS: for Observation of 2^4 vocabulary(alphabet) 
+*********************************************************
+T_Seq(HMM)    Total Recog.(%)          F1([0 1])       ConfusionMat     SubjID
+
+ T_Seq =  5, 	Acc. = 50.00(%),   F1  = NaN , Conf.Mat =[  1,  1;  0,  0] , SN =103 
+
+ T_Seq =  5, 	Acc. = 50.00(%),   F1  = NaN , Conf.Mat =[  1,  1;  0,  0] , SN =104 
+
+ T_Seq =  5, 	Acc. = 100.00(%),   F1  = 1.00 , Conf.Mat1Value =[  2] , SN =105 
+
+ T_Seq =  5, 	Acc. = 14.29(%),   F1  = NaN , Conf.Mat =[  1,  6;  0,  0] , SN =106 
+
+ T_Seq =  5, 	Acc. = 16.67(%),   F1  = NaN , Conf.Mat =[  1,  5;  0,  0] , SN =107 
+
+ T_Seq =  5, 	Acc. = 71.43(%),   F1  = 0.83 , Conf.Mat =[  0,  0;  6, 15] , SN = 2 
+
+ T_Seq =  5, 	Acc. = 94.44(%),   F1  = 0.97 , Conf.Mat =[  0,  0;  4, 68] , SN = 3 
+
+ T_Seq =  5, 	Acc. = 76.19(%),   F1  = 0.86 , Conf.Mat =[  0,  0; 10, 32] , SN = 4 
+
+ T_Seq =  5, 	Acc. = 80.00(%),   F1  = 0.89 , Conf.Mat =[  0,  0;  4, 16] , SN = 5 
+
+ T_Seq =  5, 	Acc. = 75.00(%),   F1  = 0.86 , Conf.Mat =[  0,  0;  6, 18] , SN = 6 
+
+ T_Seq =  5, 	Acc. = 78.26(%),   F1  = 0.88 , Conf.Mat =[  0,  0;  5, 18] , SN =10 
+
+ T_Seq =  5, 	Acc. = 83.72(%),   F1  = 0.91 , Conf.Mat =[  0,  0;  7, 36] , SN =11 
+
+ T_Seq =  5, 	Acc. = 58.33(%),   F1  = 0.74 , Conf.Mat =[  0,  0;  5,  7] , SN =12 
+
+ T_Seq =  5, 	Acc. = 87.23(%),   F1  = 0.93 , Conf.Mat =[  0,  0;  6, 41] , SN =13 
+
+ T_Seq =  5, 	Acc. = 66.67(%),   F1  = 0.80 , Conf.Mat =[  0,  0;  1,  2] , SN =14 
+
+ T_Seq =  5, 	Acc. =  0.00(%),   F1  = NaN , Conf.Mat =[  0,  0;  3,  0] , SN =15 
+
+ T_Seq =  5, 	Acc. = 100.00(%),   F1  = 1.00 , Conf.Mat1Value =[  3] , SN =16 
+
+ T_Seq =  5, 	Acc. = 90.00(%),   F1  = 0.95 , Conf.Mat =[  0,  0;  1,  9] , SN =17 
+
+ T_Seq =  5, 	Acc. = 81.82(%),   F1  = 0.90 , Conf.Mat =[  0,  0;  4, 18] , SN =18 
+
+ --------------------------------------------------------------------------------------- 
+
+ OVERALL 
+
+ T_Seq =  5, 	Acc. = 79.40(%),   F1 OVERALL  = 0.88  Conf.Mat OVERALL=[  6, 13; 62,283] 
+
+ ----------------------------------------------------------------------------------------- 
