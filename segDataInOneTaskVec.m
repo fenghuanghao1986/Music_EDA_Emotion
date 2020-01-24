@@ -58,20 +58,18 @@ function dataVec()
 % end
 
 
-%% warmup segmentation
+%% warmup segmentation intro
 clc;
 clear all;
 
-output = [];
-
-for i = 1: 29
+for i = 1: 40
     
-    row2 = [];
+    output = [];
     cnt = 0;
     
     for j = 1: 10
 
-        address = ['E:\EDA_Process\C_Morlet_SVM\segDataInOneTask\warmup\intro\', num2str(i), '_', num2str(j), '_1', '.mat'];
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\intro\', num2str(i), '_', num2str(j), '_1', '.mat'];
 
         if exist(address, 'file')
             load(address);
@@ -80,20 +78,79 @@ for i = 1: 29
             continue;
         end
 
-        row = imresize(saveClip, [size(saveClip, 1), size(saveClip, 2)], 'bicubic');
-        row1 = reshape(row', 1, size(row, 1) * size(row, 2));
+        temp = imresize(saveClip, [size(saveClip, 1), size(saveClip, 2)], 'bicubic');
+        temp1 = reshape(temp', 1, size(temp, 1) * size(temp, 2));
 
-        row2 = [row2; row1];
-        size(row2)
+        output = [output; temp1];
+        size(output)
 
     end
     
-%     temp = imresize(row2, [size(row2, 1), size(row2, 2)], 'bicubic');
-%     temp1 = reshape(temp', 1, size(temp, 1) * size(temp, 2));
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_intro', num2str(i)], 'output');
 
-    output = [output; row2];
-    size(output)
 end
-        
-save('E:\EDA_Process\C_Morlet_SVM\vec_warm_intro', 'output');
-   
+
+%% warmup segmentation linten
+clc;
+clear all;
+
+for i = 1: 40
+    
+    output = [];
+    cnt = 0;
+    
+    for j = 1: 10
+
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\listen\', num2str(i), '_', num2str(j), '_2', '.mat'];
+
+        if exist(address, 'file')
+            load(address);
+            cnt = cnt + 1
+        else
+            continue;
+        end
+
+        temp = imresize(saveClip, [size(saveClip, 1), size(saveClip, 2)], 'bicubic');
+        temp1 = reshape(temp', 1, size(temp, 1) * size(temp, 2));
+
+        output = [output; temp1];
+        size(output)
+
+    end
+    
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_listen', num2str(i)], 'output');
+
+end
+
+%% warmup segmentation play
+clc;
+clear all;
+
+for i = 1: 40
+    
+    output = [];
+    cnt = 0;
+    
+    for j = 1: 10
+
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\play\', num2str(i), '_', num2str(j), '_3', '.mat'];
+
+        if exist(address, 'file')
+            load(address);
+            cnt = cnt + 1
+        else
+            continue;
+        end
+
+        temp = imresize(saveClip, [size(saveClip, 1), size(saveClip, 2)], 'bicubic');
+        temp1 = reshape(temp', 1, size(temp, 1) * size(temp, 2));
+
+        output = [output; temp1];
+        size(output)
+
+    end
+    
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_play', num2str(i)], 'output');
+
+end
+           

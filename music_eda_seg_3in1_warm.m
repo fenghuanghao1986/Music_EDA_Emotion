@@ -408,11 +408,11 @@ warning off
 % remember to change folder if change machine
 % Ailienware path
 dataPath = ...
-    'E:\EDA_Process\C_Morlet_SVM\warmup';
+    'E:\EDA_Process\CMorlet_SVM_EDA\warmup';
 fileType = ...
     '*.csv';
 timeFilePath = ...
-    'E:\EDA_Process\C_Morlet_SVM';
+    'E:\EDA_Process\CMorlet_SVM_EDA';
 % Lab path
 % dataPath = ...
 %     'D:\Howard_Feng\NAO_Music_Autism_Project\EDA_Process\C_Morlet_SVM\warmup';
@@ -428,7 +428,7 @@ timeFilePath = ...
 % timeFilePath = ...
 %     'C:\Users\fengh\pythonProject\NAO_Autism_Music_Project\EDA_Process\C_Morlet_SVM';
 
-timeFileName = 'warm_up_time_33.csv';
+timeFileName = 'warm_up_time_40.csv';
 % timeFileName = 'intervention_time.csv'
 % timeFileName = 'game_time.csv';
 
@@ -571,7 +571,7 @@ for fileNum = 1: num
             if cnt2 == 1
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\C_Morlet_SVM\\segDataInOneTask\\warmup\\intro\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\intro\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
@@ -602,7 +602,7 @@ for fileNum = 1: num
             elseif cnt2 == 2
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\C_Morlet_SVM\\segDataInOneTask\\warmup\\listen\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\listen\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
@@ -629,11 +629,11 @@ for fileNum = 1: num
 % 
 %                 saveas(id, strcat(saveFolder, sprintf('File #%d segment #%d, figure, %d.fig', fileNum, cnt, cnt2)));
 %                 saveas(id, strcat(saveFolder, sprintf('File #%d segment #%d, figure, %d.tif', fileNum, cnt, cnt2)));
-                
+%                 
             else
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\C_Morlet_SVM\\segDataInOneTask\\warmup\\play\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\play\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
@@ -643,6 +643,7 @@ for fileNum = 1: num
                 saveClip = znormCWTSpect;
 
                 save(fullfile(saveFolder, saveName), 'saveClip')
+                
 %                 id = figure;
 %                 
 %                 hold on 

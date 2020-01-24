@@ -16,175 +16,214 @@ close all;
 
 %% Make Dataset
 
-disp('Loading Data ...')
-downSamp = 100;
+SVMAcc = [];
+KNNAcc = [];
+SVMMat = {};
+KNNMat = {};
 
-% C = 0.1; % for 2 different tasks
-% C = 10; % for 3 different tasks
+for s = 1: 40
+    
+    disp('Loading Data ...')
+    downSamp = 100;
 
-
-task_1 = load('vec_warm_intro');
-task_1 = task_1.output;
-task_2 = load('vec_warm_listen');
-task_2 = task_2.output;
-task_3 = load('vec_warm_play');
-task_3 = task_3.output;
-
-DataSet = { 
-            downsample(task_1', downSamp)', ...
-            downsample(task_2', downSamp)', ...
-            downsample(task_3', downSamp)', ...
-            };
+    % C = 0.1; % for 2 different tasks
+    % C = 10; % for 3 different tasks
 
 
-% KernelName = 'Linear'; 
-% KernelName = 'Polynomial';
-KernelName = 'RBF';
+    task_1 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_intro', num2str(s)]);
+    task_1 = task_1.output;
+    task_2 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_listen', num2str(s)]);
+    task_2 = task_2.output;
+    task_3 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_play', num2str(s)]);
+    task_3 = task_3.output;
 
-SampNumb = 10
-TaskNumb = 3;
-
-%% Kfold & PCA & Classification
-
-disp('Kfold & PCA & Classification ...')
-
-SVMLabels_M = zeros(TaskNumb,SampNumb);
-deciSVM = [];
-
-KNNLabels_M = zeros(TaskNumb,SampNumb);
-deciKNN = [];
-SaveTestLabel = [];
+    DataSet = { 
+                downsample(task_1', downSamp)', ...
+%                 downsample(task_2', downSamp)', ...
+                downsample(task_3', downSamp)', ...
+                };
 
 
-for k = 1 : SampNumb         
+%     KernelName = 'Linear'; 
+%     KernelName = 'Polynomial';
+    KernelName = 'RBF';
 
-     TrSaLe = [];
-     TeSaLe = [];
+    SampNumb = 10
+    TaskNumb = 2;
 
-     for i = 1 : numel(DataSet)
+    %% Kfold & PCA & Classification
 
-         TempMemLe = DataSet{i};
+    disp('Kfold & PCA & Classification ...')
 
-         if isempty(TempMemLe)
-             continue
-         else
+    SVMLabels_M = zeros(TaskNumb,SampNumb);
+    deciSVM = [];
 
-            [TrainLe, TestLe] = Kfold(TempMemLe, SampNumb, SampNumb, k);            
-%             TrainLe = [TrainLe; TestLe];
-%             size(TrainLe)
+    KNNLabels_M = zeros(TaskNumb,SampNumb);
+    deciKNN = [];
+    SaveTestLabel = [];
 
-            TrSaLe = [TrSaLe; TrainLe];
-            TeSaLe = [TeSaLe; TestLe]; 
+
+    for k = 1 : SampNumb         
+
+         TrSaLe = [];
+         TeSaLe = [];
+
+         for i = 1 : numel(DataSet)
+
+             TempMemLe = DataSet{i};
+
+             if isempty(TempMemLe)
+                 continue
+             else
+
+                [TrainLe, TestLe] = Kfold(TempMemLe, SampNumb, SampNumb, k);            
+    %             TrainLe = [TrainLe; TestLe];
+    %             size(TrainLe)
+
+                TrSaLe = [TrSaLe; TrainLe];
+                TeSaLe = [TeSaLe; TestLe]; 
+
+             end
+
+         end    
+
+         TrLa = [];
+         TeLa = [];
+
+         for z = 1 : TaskNumb        
+
+              TrLa = [TrLa; z*ones(size(TrainLe, 1),1)];
+              TeLa = [TeLa; z*ones(size(TestLe, 1),1)];                        
 
          end
 
-     end    
+         SaveTestLabel = [SaveTestLabel, TeLa];
 
-     TrLa = [];
-     TeLa = [];
+    %%  PCA
 
-     for z = 1 : TaskNumb        
+          % Normalize the Dataset (Left) and PCA
+         minLe = min(TrSaLe(:));
+         maxLe = max(TrSaLe(:));
 
-          TrLa = [TrLa; z*ones(size(TrainLe, 1),1)];
-          TeLa = [TeLa; z*ones(size(TestLe, 1),1)];                        
+         TrSaLe = (TrSaLe - minLe)/(maxLe - minLe);
+         TeSaLe = (TeSaLe - minLe)/(maxLe - minLe); 
+         PCAratio = 0.05;
+         size(TrSaLe, 2)
+         [TrFeLe, TeFeLe] = CorrectPCA(TrSaLe, TeSaLe, PCAratio);
+         size(TrFeLe, 2)
+    %      TrFeLe = TrSaLe;  TeFeLe = TeSaLe; %%% Statistics based
 
-     end
+    %%  SVM
 
-     SaveTestLabel = [SaveTestLabel, TeLa];
+         TrFeCo = TrFeLe;    
+         TeFeCo = TeFeLe; 
+         if strcmp(KernelName, 'Linear') 
+             [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 10 -t 0 ');
+         elseif strcmp(KernelName, 'Polynomial')
+             [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 1 -t 1 -d 2');       % Polynomial
+         else 
+             [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 1000 -t 2 -g 0.0001');    % RBF
+         end
 
-%%  PCA
+         [SVMLabels, ~, DecEst] = svmpredict(TeLa, TeFeCo, model);
+         deciSVM = [deciSVM, DecEst * model.Label(1)];
+         SVMLabels_M(:,k) = SVMLabels(:);
 
-      % Normalize the Dataset (Left) and PCA
-     minLe = min(TrSaLe(:));
-     maxLe = max(TrSaLe(:));
+    %% KNN
 
-     TrSaLe = (TrSaLe - minLe)/(maxLe - minLe);
-     TeSaLe = (TeSaLe - minLe)/(maxLe - minLe); 
-     PCAratio = 0.05;
-     size(TrSaLe, 2)
-     [TrFeLe, TeFeLe] = CorrectPCA(TrSaLe, TeSaLe, PCAratio);
-     size(TrFeLe, 2)
-%      TrFeLe = TrSaLe;  TeFeLe = TeSaLe; %%% Statistics based
+         K =3;  % K = 1, 3, 5, ...
 
-%%  SVM
+         KNNClassifierObject= ClassificationKNN.fit(TrFeCo, TrLa,  'NumNeighbors', K, 'Distance', 'euclidean');
+         [KNNLabels, score, ~] = predict(KNNClassifierObject,TeFeCo);
+         deciKNN = [deciKNN, score(:,2)];
+         KNNLabels_M(:,k) = KNNLabels(:);
 
-     TrFeCo = TrFeLe;    
-     TeFeCo = TeFeLe; 
-     if strcmp(KernelName, 'Linear') 
-         [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 0.1 -t 0 ');
-     elseif strcmp(KernelName, 'Polynomial')
-         [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 0.1 -t 1 -d 2');       % Polynomial
-     else 
-         [model] = svmtrain(TrLa, TrFeCo, '-s 0 -c 1000 -t 2 -g 0.0001');    % RBF
-     end
+    end
 
-     [SVMLabels, ~, DecEst] = svmpredict(TeLa, TeFeCo, model);
-     deciSVM = [deciSVM, DecEst * model.Label(1)];
-     SVMLabels_M(:,k) = SVMLabels(:);
+    %% Quantitative Assessments
 
-%% KNN
+    SaveTestLabel = SaveTestLabel'; SaveTestLabel = SaveTestLabel(:);
+    SVMLabels_M = SVMLabels_M'; SVMLabels_M = SVMLabels_M(:);
+    KNNLabels_M = KNNLabels_M'; KNNLabels_M = KNNLabels_M(:);
 
-     K = 9;  % K = 1, 3, 5, ...
+    deciSVM = deciSVM'; deciSVM = deciSVM(:);
+    deciKNN = deciKNN'; deciKNN = deciKNN(:);
 
-     KNNClassifierObject= ClassificationKNN.fit(TrFeCo, TrLa,  'NumNeighbors', K, 'Distance', 'euclidean');
-     [KNNLabels, score, ~] = predict(KNNClassifierObject,TeFeCo);
-     deciKNN = [deciKNN, score(:,2)];
-     KNNLabels_M(:,k) = KNNLabels(:);
 
+    if TaskNumb ~= 2
+
+        AccuracySVM = numel(find(SVMLabels_M == SaveTestLabel)) / numel(SaveTestLabel);
+        [ConfMat, ProbConfMatSVM] = ConfusionMatrix(SaveTestLabel, SVMLabels_M);
+    %             save(['E:\EDA_Process\C_Morlet_SVM\results\SVM_', KernelName, '_', EventName{1}, ' & ', ...
+    %                   EventName{2}, ' & ', EventName{3}],  'ProbConfMatSVM', 'AccuracySVM') 
+        disp(['SVM Accuracy: ', num2str(AccuracySVM)])
+        disp('SVM ConfMat: ');
+        disp(num2str(ProbConfMatSVM))
+        SVMAcc(s) = AccuracySVM;
+        SVMMat{s} = ProbConfMatSVM;
+
+
+        AccuracyKNN = numel(find(KNNLabels_M == SaveTestLabel)) / numel(SaveTestLabel);    
+        [ConfMat, ProbConfMatKNN] = ConfusionMatrix(SaveTestLabel, KNNLabels_M);
+    %     save(['C:\Users\CV_LAB_Howard\Desktop\HCode\SaveResults\KNN_K', num2str(K), '_', EventName{1}, ' & ', ...
+    %           EventName{2}, ' & ', EventName{3}],  'ProbConfMatKNN', 'AccuracyKNN') 
+        disp(['KNN Accuracy: ', num2str(AccuracyKNN)])
+        disp('KNN ConfMat: ');
+        disp(num2str(ProbConfMatKNN)) 
+        KNNAcc(s) = AccuracyKNN;
+        KNNMat{s} = ProbConfMatKNN;
+
+
+    else 
+        [ConfMatSVM, PercisionSVM, RecallSVM, AccuracySVM, aucSVM, ~, ~, AvePercisionSVM, AveRecallSVM] = ...
+                                 PRA(SaveTestLabel, SVMLabels_M, deciSVM,['SVM-', KernelName]);
+    %     save(['E:\EDA_Process\C_Morlet_SVM\segDataInOneTask\warmup\SVM_', KernelName, '_', 'vec_warm_intro', ' & ', ...
+    %           'vec_warm_listen'],  'ConfMatSVM', 'PercisionSVM', 'RecallSVM', 'AccuracySVM', 'aucSVM') 
+        disp(['SVM>> Accuracy: ', num2str(AccuracySVM), '; Percision: ', num2str(PercisionSVM), ...
+              '; Recall: ', num2str(RecallSVM), '; AUC: ', num2str(aucSVM), '; AvePercision: ', ...
+              num2str(AvePercisionSVM), '; AveRecall: ', num2str(AveRecallSVM)])
+        disp('SVM ConfMat: ')
+        disp(num2str(ConfMatSVM))
+        SVMAcc(s) = AccuracySVM;
+        SVMMat{s} = ConfMatSVM;
+
+
+
+        [ConfMatKNN, PercisionKNN, RecallKNN, AccuracyKNN, aucKNN, ~, ~, AvePercisionKNN, AveRecallKNN] = ... 
+                                 PRA(SaveTestLabel, KNNLabels_M, deciKNN, ['KNN-K', num2str(K)]); 
+    %     save(['E:\EDA_Process\C_Morlet_SVM\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'vec_warm_intro', ' & ', ...
+    %           'vec_warm_listen'],  'ConfMatKNN', 'PercisionKNN', 'RecallKNN', 'AccuracyKNN', 'aucKNN') 
+        disp(['KNN>> Accuracy: ', num2str(AccuracyKNN), '; Percision: ', num2str(PercisionKNN), ...
+              '; Recall: ', num2str(RecallKNN), '; AUC: ', num2str(aucKNN), '; AvePercision: ', ...
+              num2str(AvePercisionKNN), '; AveRecall: ', num2str(AveRecallKNN)])
+        disp('KNN ConfMat: ')
+        disp(num2str(ConfMatKNN))
+        KNNAcc(s) = AccuracyKNN;
+        KNNMat{s} = ConfMatKNN;
+        
+
+    end
+    % save all acc for 3 classes accross all files
+    avgSVM = mean(SVMAcc);
+    avgKNN = mean(KNNAcc);
+    
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_3_parts'],  'SVMAcc', 'SVMMat')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_3_parts'],  'KNNAcc', 'KNNMat')
+%     
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_3_parts_average'],  'avgSVM')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_3_parts_average'],  'avgKNN')
+
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_2_parts'],  'SVMAcc', 'SVMMat')
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_2_parts'],  'KNNAcc', 'KNNMat')
+    
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_2_parts_average'],  'avgSVM')
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_2_parts_average'],  'avgKNN')
+    
+    disp(['avgSVM: ', num2str(avgSVM)])
+    disp(['avgKNN: ', num2str(avgKNN)])
 end
+close all;
 
-%% Quantitative Assessments
-
-SaveTestLabel = SaveTestLabel'; SaveTestLabel = SaveTestLabel(:);
-SVMLabels_M = SVMLabels_M'; SVMLabels_M = SVMLabels_M(:);
-KNNLabels_M = KNNLabels_M'; KNNLabels_M = KNNLabels_M(:);
-
-deciSVM = deciSVM'; deciSVM = deciSVM(:);
-deciKNN = deciKNN'; deciKNN = deciKNN(:);
-
-
-if TaskNumb ~= 2
-
-    AccuracySVM = numel(find(SVMLabels_M == SaveTestLabel)) / numel(SaveTestLabel);
-    [~, ProbConfMatSVM] = ConfusionMatrix(SaveTestLabel, SVMLabels_M);
-%             save(['E:\EDA_Process\C_Morlet_SVM\results\SVM_', KernelName, '_', EventName{1}, ' & ', ...
-%                   EventName{2}, ' & ', EventName{3}],  'ProbConfMatSVM', 'AccuracySVM') 
-    disp(['SVM Accuracy: ', num2str(AccuracySVM)])
-    disp('SVM ConfMat: ');
-    disp(num2str(ProbConfMatSVM))
-
-    AccuracyKNN = numel(find(KNNLabels_M == SaveTestLabel)) / numel(SaveTestLabel);    
-    [~, ProbConfMatKNN] = ConfusionMatrix(SaveTestLabel, KNNLabels_M);
-%     save(['C:\Users\CV_LAB_Howard\Desktop\HCode\SaveResults\KNN_K', num2str(K), '_', EventName{1}, ' & ', ...
-%           EventName{2}, ' & ', EventName{3}],  'ProbConfMatKNN', 'AccuracyKNN') 
-    disp(['KNN Accuracy: ', num2str(AccuracyKNN)])
-    disp('KNN ConfMat: ');
-    disp(num2str(ProbConfMatKNN))   
-
-else 
-    [ConfMatSVM, PercisionSVM, RecallSVM, AccuracySVM, aucSVM, ~, ~, AvePercisionSVM, AveRecallSVM] = ...
-                             PRA(SaveTestLabel, SVMLabels_M, deciSVM,['SVM-', KernelName]);
-%     save(['E:\EDA_Process\C_Morlet_SVM\segDataInOneTask\warmup\SVM_', KernelName, '_', 'vec_warm_intro', ' & ', ...
-%           'vec_warm_listen'],  'ConfMatSVM', 'PercisionSVM', 'RecallSVM', 'AccuracySVM', 'aucSVM') 
-    disp(['SVM>> Accuracy: ', num2str(AccuracySVM), '; Percision: ', num2str(PercisionSVM), ...
-          '; Recall: ', num2str(RecallSVM), '; AUC: ', num2str(aucSVM), '; AvePercision: ', ...
-          num2str(AvePercisionSVM), '; AveRecall: ', num2str(AveRecallSVM)])
-    disp('SVM ConfMat: ')
-    disp(num2str(ConfMatSVM))
-
-
-    [ConfMatKNN, PercisionKNN, RecallKNN, AccuracyKNN, aucKNN, ~, ~, AvePercisionKNN, AveRecallKNN] = ... 
-                             PRA(SaveTestLabel, KNNLabels_M, deciKNN, ['KNN-K', num2str(K)]); 
-%     save(['E:\EDA_Process\C_Morlet_SVM\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'vec_warm_intro', ' & ', ...
-%           'vec_warm_listen'],  'ConfMatKNN', 'PercisionKNN', 'RecallKNN', 'AccuracyKNN', 'aucKNN') 
-    disp(['KNN>> Accuracy: ', num2str(AccuracyKNN), '; Percision: ', num2str(PercisionKNN), ...
-          '; Recall: ', num2str(RecallKNN), '; AUC: ', num2str(aucKNN), '; AvePercision: ', ...
-          num2str(AvePercisionKNN), '; AveRecall: ', num2str(AveRecallKNN)])
-    disp('KNN ConfMat: ')
-    disp(num2str(ConfMatKNN))
-
-
-end
 
 % %% task intro vs task listen cross validation
 % clc;
