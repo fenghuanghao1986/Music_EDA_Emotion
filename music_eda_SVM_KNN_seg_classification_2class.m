@@ -16,7 +16,7 @@ close all;
 
 %% Make Dataset
 
-disp('Loading Data ...')
+disp('Loading Data ...')  
 downSamp = 100;
 
 % C = 0.1; % for 2 different tasks
