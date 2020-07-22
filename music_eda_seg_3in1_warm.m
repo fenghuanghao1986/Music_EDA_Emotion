@@ -408,7 +408,7 @@ warning off
 % remember to change folder if change machine
 % Ailienware path
 dataPath = ...
-    'E:\EDA_Process\CMorlet_SVM_EDA\warmup';
+    'E:\EDA_Process\CMorlet_SVM_EDA\intervention';
 fileType = ...
     '*.csv';
 timeFilePath = ...
@@ -428,8 +428,8 @@ timeFilePath = ...
 % timeFilePath = ...
 %     'C:\Users\fengh\pythonProject\NAO_Autism_Music_Project\EDA_Process\C_Morlet_SVM';
 
-timeFileName = 'warm_up_time_40.csv';
-% timeFileName = 'intervention_time.csv'
+% timeFileName = 'warm_up_time_40.csv';
+timeFileName = 'intervention_time.csv'
 % timeFileName = 'game_time.csv';
 
 % create a data structure called dd by using dir()
@@ -571,7 +571,7 @@ for fileNum = 1: num
             if cnt2 == 1
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\intro\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\inter\\listen\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
@@ -602,7 +602,7 @@ for fileNum = 1: num
             elseif cnt2 == 2
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\listen\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\inter\\play\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
@@ -633,7 +633,7 @@ for fileNum = 1: num
             else
                 
                 saveFolder = ...
-                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\warmup\\play\\');
+                    sprintf('E:\\EDA_Process\\CMorlet_SVM_EDA\\segDataInOneTask\\inter\\feedback\\');
                 % Surface path
             %     saveFolder = ...
             %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');

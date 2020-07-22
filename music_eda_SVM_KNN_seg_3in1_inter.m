@@ -21,7 +21,7 @@ KNNAcc = [];
 SVMMat = {};
 KNNMat = {};
 
-for s = 1: 40
+for s = 1: 29
     
     disp('Loading Data ...')
     downSamp = 100;
@@ -30,11 +30,11 @@ for s = 1: 40
     % C = 10; % for 3 different tasks
 
 
-    task_1 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_intro', num2str(s)]);
+    task_1 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_listen', num2str(s)]);
     task_1 = task_1.output;
-    task_2 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_listen', num2str(s)]);
+    task_2 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_play', num2str(s)]);
     task_2 = task_2.output;
-    task_3 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_play', num2str(s)]);
+    task_3 = load(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_feedback', num2str(s)]);
     task_3 = task_3.output;
 
     DataSet = { 
@@ -207,17 +207,17 @@ for s = 1: 40
     avgSVM = mean(SVMAcc);
     avgKNN = mean(KNNAcc);
     
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_3_parts'],  'SVMAcc', 'SVMMat')
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_3_parts'],  'KNNAcc', 'KNNMat')
-    
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_3_parts_average'],  'avgSVM')
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_3_parts_average'],  'avgKNN')
-% 
-%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_2_parts'],  'SVMAcc', 'SVMMat')
-%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_2_parts'],  'KNNAcc', 'KNNMat')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\SVM_', KernelName, '_', 'for_3_parts'],  'SVMAcc', 'SVMMat')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\KNN_K', num2str(K), '_', 'for_3_parts'],  'KNNAcc', 'KNNMat')
 %     
-%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\SVM_', KernelName, '_', 'for_2_parts_average'],  'avgSVM')
-%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\KNN_K', num2str(K), '_', 'for_2_parts_average'],  'avgKNN')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\SVM_', KernelName, '_', 'for_3_parts_average'],  'avgSVM')
+%     save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\KNN_K', num2str(K), '_', 'for_3_parts_average'],  'avgKNN')
+% 
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\SVM_', KernelName, '_', 'for_2_parts'],  'SVMAcc', 'SVMMat')
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\KNN_K', num2str(K), '_', 'for_2_parts'],  'KNNAcc', 'KNNMat')
+    
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\SVM_', KernelName, '_', 'for_2_parts_average'],  'avgSVM')
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\KNN_K', num2str(K), '_', 'for_2_parts_average'],  'avgKNN')
     
     disp(['avgSVM: ', num2str(avgSVM)])
     disp(['avgKNN: ', num2str(avgKNN)])

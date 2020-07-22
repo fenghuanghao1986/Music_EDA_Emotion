@@ -62,14 +62,14 @@ function dataVec()
 clc;
 clear all;
 
-for i = 1: 40
+for i = 1: 30
     
     output = [];
     cnt = 0;
     
     for j = 1: 10
 
-        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\intro\', num2str(i), '_', num2str(j), '_1', '.mat'];
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\listen\', num2str(i), '_', num2str(j), '_1', '.mat'];
 
         if exist(address, 'file')
             load(address);
@@ -86,7 +86,7 @@ for i = 1: 40
 
     end
     
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_intro', num2str(i)], 'output');
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_listen', num2str(i)], 'output');
 
 end
 
@@ -94,14 +94,14 @@ end
 clc;
 clear all;
 
-for i = 1: 40
+for i = 1: 30
     
     output = [];
     cnt = 0;
     
     for j = 1: 10
 
-        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\listen\', num2str(i), '_', num2str(j), '_2', '.mat'];
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\play\', num2str(i), '_', num2str(j), '_2', '.mat'];
 
         if exist(address, 'file')
             load(address);
@@ -118,7 +118,7 @@ for i = 1: 40
 
     end
     
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_listen', num2str(i)], 'output');
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_play', num2str(i)], 'output');
 
 end
 
@@ -126,14 +126,14 @@ end
 clc;
 clear all;
 
-for i = 1: 40
+for i = 1: 30
     
     output = [];
     cnt = 0;
     
     for j = 1: 10
 
-        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\play\', num2str(i), '_', num2str(j), '_3', '.mat'];
+        address = ['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\feedback\', num2str(i), '_', num2str(j), '_3', '.mat'];
 
         if exist(address, 'file')
             load(address);
@@ -150,7 +150,7 @@ for i = 1: 40
 
     end
     
-    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\warmup\vec_warm_play', num2str(i)], 'output');
+    save(['E:\EDA_Process\CMorlet_SVM_EDA\segDataInOneTask\inter\vec_inter_feedback', num2str(i)], 'output');
 
 end
            
