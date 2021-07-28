@@ -428,7 +428,7 @@ timeFilePath = ...
 % timeFilePath = ...
 %     'C:\Users\fengh\pythonProject\NAO_Autism_Music_Project\EDA_Process\C_Morlet_SVM';
 
-timeFileName = 'warm_up_time_33.csv';
+timeFileName = 'warm_up_time.csv';
 % timeFileName = 'intervention_time.csv'
 % timeFileName = 'game_time.csv';
 
