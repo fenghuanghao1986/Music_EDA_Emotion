@@ -56,6 +56,7 @@ for fileNum = 1: num
     znormQ = [];
     znormCWT = [];
     znormFilter = [];
+    my_mean = [];
     znormCWTSpect = [];
     muQ = [];
     sigmaQ = [];
@@ -174,7 +175,7 @@ for fileNum = 1: num
 
         cnt
         var(znormFilter)
-        mean(znormFilter)
+        my_mean[fileNum] = mean(znormFilter);
         
     end
         
