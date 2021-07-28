@@ -112,14 +112,6 @@ for fileNum = 1: num
     
     for k = 1: step: (step*12)
         
-        znormQ = [];
-        znormCWT = [];
-        znormFilter = [];
-        znormCWTCubic = [];
-        znormCWTSpect = [];
-        muQ = [];
-        sigmaQ = [];
-        saveClip = [];
         tempCell = [];
         tempCellMtx = [];
         tempMtx = [];
