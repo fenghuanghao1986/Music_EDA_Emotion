@@ -49,6 +49,9 @@ timeFileOpen = fopen(fullfile(timeFilePath, timeFileName));
 timeMtx = textscan(timeFileOpen, '%s%s%s', 'delimiter', ',', 'CollectOutput', true);
 t = timeMtx{1};
 % start the loop for saving all mat files and ready for vetorization
+
+all_mean = []
+all_var = []
 for fileNum = 1: num
     
     startTime = '0:0.0';
@@ -57,6 +60,7 @@ for fileNum = 1: num
     znormCWT = [];
     znormFilter = [];
     my_mean = [];
+    my_var = [];
     znormCWTSpect = [];
     muQ = [];
     sigmaQ = [];
@@ -173,12 +177,12 @@ for fileNum = 1: num
 %         saveas(id, strcat(saveFolder, sprintf('File #%d segment #%d, figure.tif', fileNum, cnt)))
 %         close all;
 
-        cnt
-        var(znormFilter)
-        my_mean[fileNum] = mean(znormFilter);
+        
+        my_mean(:,cnt) = mean(znormQ);
         
     end
-        
+    all_mean(:, fileNum) = mean(my_mean);
+    all_var(:, fileNum) = var(all_mean);
 end
 
 % %% game segmentation
