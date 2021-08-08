@@ -206,11 +206,11 @@ end
 % plot(all_mean2)
 % plot(all_mean3)
 
-% saveName = ...
-%             sprintf('origmean.mat');
-%         saveClip1 = all_mean1;
-% 
-%         save(fullfile(saveFolder, saveName), 'saveClip1')
+saveName = ...
+            sprintf('origmean_inter.mat');
+        saveClip1 = all_mean1;
+
+        save(fullfile(saveFolder, saveName), 'saveClip1')
 saveName = ...
             sprintf('znormean_inter.mat');
         saveClip2 = all_mean2;
@@ -632,11 +632,11 @@ end
 % plot(all_mean2)
 % plot(all_mean3)
 
-% saveName = ...
-%             sprintf('origmean.mat');
-%         saveClip1 = all_mean1;
-% 
-%         save(fullfile(saveFolder, saveName), 'saveClip1')
+saveName = ...
+            sprintf('origmean_warm.mat');
+        saveClip1 = all_mean1;
+
+        save(fullfile(saveFolder, saveName), 'saveClip1')
 saveName = ...
             sprintf('znormean_warm.mat');
         saveClip2 = all_mean2;

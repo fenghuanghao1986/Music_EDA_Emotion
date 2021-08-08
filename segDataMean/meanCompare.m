@@ -7,12 +7,12 @@ warning off
 %load mat file
 %compare warmup means
 fileName = ...
-    'E:\EDA_Process\C_Morlet_SVM\segDataMean\warm\filtermean_warm.mat';
+    'E:\EDA_Process\C_Morlet_SVM\segDataMean\warm\origmean_warm.mat';
 
 disp('Loading File ...')
 
 warmFile = load(fileName);
-warmFile = warmFile.saveClip3;
+warmFile = warmFile.saveClip1;
 
 mean(warmFile)
 max(warmFile)
@@ -29,7 +29,7 @@ median(abs(warmFile))
 
 x = reshape(warmFile, 50,8);
 % x = warmFile;
-plot(x(:,8))
+plot(x(:,8),'*')
 
 %compare intervention means 
 % fileName = ...
