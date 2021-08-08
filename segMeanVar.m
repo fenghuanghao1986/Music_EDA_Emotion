@@ -119,6 +119,9 @@ for fileNum = 1: num
     
     for k = 1: step: (step*12)
         
+        normOne = [];
+        normCWT = [];
+        normFilter = [];
         znormQ = [];
         znormCWT = [];
         znormFilter = [];
@@ -137,38 +140,46 @@ for fileNum = 1: num
         cnt = cnt + 1;
     
         fprintf('Reading CSV data file number %d clip %d ...\n', fileNum, cnt);
-        % do the znorm for all eda data and save in znorm, mu, and sigma
-        [znormQ, muQ, sigmaQ] = zscore(target);
-        fprintf('Znorm done for file %d clip %d ... \n', fileNum, cnt);
+%         % do the znorm for all eda data and save in znorm, mu, and sigma
+%         [znormQ, muQ, sigmaQ] = zscore(target);
+%         fprintf('Znorm done for file %d clip %d ... \n', fileNum, cnt);
+        fprintf('Normalization done for file %d clip %d ... \n', fileNum, cnt);
 
+        % do the normalization
+%         [normOne, C, S] = normalize(target);
+        normOne = norm(target);
+        
         % after znorm, do med filter to it, and save in znormFilter
-        znormFilter = medfilt1(znormQ.', 32);
+%         znormFilter = medfilt1(znormQ.', 32);
+        normFilter = medfilt1(normOne.', 32);
 
         % do the cwt using cmor1.5-2
-        znormCWT = abs(cwt(znormFilter, scaleRange, 'cmor1.5-2'));
-        % resize all data as spectrum in 100* 320
-        znormCWTCubic = imresize(znormCWT, [100, 1440], 'bicubic');
-        % more process to the spectrum
-        BEpoch = 1: 10;
-        BaseMat = (znormCWTCubic(:, BEpoch))';
-        BaseMean = repmat(mean(BaseMat)', 1, size(znormCWTCubic,2));
-        BaseStd = repmat(std(BaseMat)', 1, size(znormCWTCubic, 2));
-        znormCWTSpect = (znormCWTCubic - BaseMean) ./ BaseStd;
+%         znormCWT = abs(cwt(znormFilter, scaleRange, 'cmor1.5-2'));
+        normCWT = abs(cwt(normFilter, scaleRange, 'cmor1.5-2'));
+%         
+%         % resize all data as spectrum in 100* 320
+%         znormCWTCubic = imresize(znormCWT, [100, 1440], 'bicubic');
+%         % more process to the spectrum
+%         BEpoch = 1: 10;
+%         BaseMat = (znormCWTCubic(:, BEpoch))';
+%         BaseMean = repmat(mean(BaseMat)', 1, size(znormCWTCubic,2));
+%         BaseStd = repmat(std(BaseMat)', 1, size(znormCWTCubic, 2));
+%         znormCWTSpect = (znormCWTCubic - BaseMean) ./ BaseStd;
 
         % save all the mat files
  
     %     Alienware path
         saveFolder = ...
             sprintf('E:\\EDA_Process\\C_Morlet_SVM\\segDataMean\\inter\\');
-        % Surface path
-    %     saveFolder = ...
-    %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
-
-        saveName = ...
-            sprintf('%d_%d.mat', fileNum, cnt);
-        saveClip = znormCWTSpect;
-
-        save(fullfile(saveFolder, saveName), 'saveClip')
+%         % Surface path
+%     %     saveFolder = ...
+%     %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
+% 
+%         saveName = ...
+%             sprintf('%d_%d.mat', fileNum, cnt);
+%         saveClip = znormCWTSpect;
+% 
+%         save(fullfile(saveFolder, saveName), 'saveClip')
 
 %         id = figure;
 %         hold on 
@@ -188,9 +199,9 @@ for fileNum = 1: num
 %         close all;
 
         
-        my_mean1(:,cnt) = mean(target);
-        my_mean2(:,cnt) = mean(znormQ);
-        my_mean3(:,cnt) = mean(znormFilter);
+        my_mean1(:,cnt) = mean(normOne);
+        my_mean2(:,cnt) = mean(normCWT);
+        my_mean3(:,cnt) = mean(normFilter);
         
     end
     all_mean1(:, fileNum) = my_mean1;
@@ -207,17 +218,17 @@ end
 % plot(all_mean3)
 
 saveName = ...
-            sprintf('origmean_inter.mat');
+            sprintf('norm_inter.mat');
         saveClip1 = all_mean1;
 
         save(fullfile(saveFolder, saveName), 'saveClip1')
 saveName = ...
-            sprintf('znormean_inter.mat');
+            sprintf('CWT_inter.mat');
         saveClip2 = all_mean2;
 
         save(fullfile(saveFolder, saveName), 'saveClip2')
 saveName = ...
-            sprintf('filtermean_inter.mat');
+            sprintf('filter_inter.mat');
         saveClip3 = all_mean3;
 
         save(fullfile(saveFolder, saveName), 'saveClip3')
@@ -543,6 +554,9 @@ for fileNum = 1: num
     
     for k = 1: step: (step*10)
         
+        normOne = [];
+        normCWT = [];
+        normFilter = [];
         znormQ = [];
         znormCWT = [];
         znormFilter = [];
@@ -561,37 +575,43 @@ for fileNum = 1: num
         cnt = cnt + 1;
                         
         fprintf('Reading CSV data file number %d clip %d ...\n', fileNum, cnt);
-        % do the znorm for all eda data and save in znorm, mu, and sigma
-        [znormQ, muQ, sigmaQ] = zscore(target);
-        fprintf('Znorm done for file %d clip %d ... \n', fileNum, cnt);
+%         % do the znorm for all eda data and save in znorm, mu, and sigma
+%         [znormQ, muQ, sigmaQ] = zscore(target);
+%         fprintf('Znorm done for file %d clip %d ... \n', fileNum, cnt);
+        
+        % do the normalzation
+        normOne = norm(target);
+        fprintf('Normlization done for file %d clip %d ... \n', fileNum, cnt);
 
-        % after znorm, do med filter to it, and save in znormFilter
-        znormFilter = medfilt1(znormQ.', 32);
-
-        % do the cwt using cmor1.5-2
-        znormCWT = abs(cwt(znormFilter, scaleRange, 'cmor1.5-2'));
-        % resize all data as spectrum in 100* 320
-        znormCWTCubic = imresize(znormCWT, [100, 1440], 'bicubic');
-        % more process to the spectrum
-        BEpoch = 1: 10;
-        BaseMat = (znormCWTCubic(:, BEpoch))';
-        BaseMean = repmat(mean(BaseMat)', 1, size(znormCWTCubic,2));
-        BaseStd = repmat(std(BaseMat)', 1, size(znormCWTCubic, 2));
-        znormCWTSpect = (znormCWTCubic - BaseMean) ./ BaseStd;
-
-        % save all the mat files
-            %     Alienware path
+%         % after znorm, do med filter to it, and save in znormFilter
+% %         znormFilter = medfilt1(znormQ.', 32);
+        normFilter = medfilt1(normOne.', 32);
+%         
+%         % do the cwt using cmor1.5-2
+%         znormCWT = abs(cwt(znormFilter, scaleRange, 'cmor1.5-2'));
+        normCWT = abs(cwt(normFilter, scaleRange, 'cmor1.5-2'));
+%         % resize all data as spectrum in 100* 320
+%         znormCWTCubic = imresize(znormCWT, [100, 1440], 'bicubic');
+%         % more process to the spectrum
+%         BEpoch = 1: 10;
+%         BaseMat = (znormCWTCubic(:, BEpoch))';
+%         BaseMean = repmat(mean(BaseMat)', 1, size(znormCWTCubic,2));
+%         BaseStd = repmat(std(BaseMat)', 1, size(znormCWTCubic, 2));
+%         znormCWTSpect = (znormCWTCubic - BaseMean) ./ BaseStd;
+% 
+%         % save all the mat files
+%             %     Alienware path
         saveFolder = ...
             sprintf('E:\\EDA_Process\\C_Morlet_SVM\\segDataMean\\warm\\');
-        % Surface path
-    %     saveFolder = ...
-    %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
-
-        saveName = ...
-            sprintf('%d_%d.mat', fileNum, cnt);
-        saveClip = znormCWTSpect;
-
-        save(fullfile(saveFolder, saveName), 'saveClip')
+%         % Surface path
+%     %     saveFolder = ...
+%     %         sprintf('C:\\Users\\fengh\\pythonProject\\NAO_Autism_Music_Project\\EDA_Process\\C_Morlet_SVM\\warmup\\');
+% 
+%         saveName = ...
+%             sprintf('%d_%d.mat', fileNum, cnt);
+%         saveClip = znormCWTSpect;
+% 
+%         save(fullfile(saveFolder, saveName), 'saveClip')
 
 %         id = figure;
 %         hold on 
@@ -612,9 +632,9 @@ for fileNum = 1: num
 %         k
 %         ignore
 
-        my_mean1(:,cnt) = mean(target);
-        my_mean2(:,cnt) = mean(znormQ);
-        my_mean3(:,cnt) = mean(znormFilter);
+        my_mean1(:,cnt) = mean(normOne);
+        my_mean2(:,cnt) = mean(normCWT);
+        my_mean3(:,cnt) = mean(normFilter);
         
     end
     
@@ -633,17 +653,17 @@ end
 % plot(all_mean3)
 
 saveName = ...
-            sprintf('origmean_warm.mat');
+            sprintf('norm_warm.mat');
         saveClip1 = all_mean1;
 
         save(fullfile(saveFolder, saveName), 'saveClip1')
 saveName = ...
-            sprintf('znormean_warm.mat');
+            sprintf('CWT_warm.mat');
         saveClip2 = all_mean2;
 
         save(fullfile(saveFolder, saveName), 'saveClip2')
 saveName = ...
-            sprintf('filtermean_warm.mat');
+            sprintf('filter_warm.mat');
         saveClip3 = all_mean3;
 
         save(fullfile(saveFolder, saveName), 'saveClip3')
