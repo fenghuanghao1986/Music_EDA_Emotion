@@ -7,29 +7,29 @@ warning off
 %load mat file
 %compare warmup means
 fileName = ...
-    'E:\EDA_Process\C_Morlet_SVM\segDataMean\warm\znormean_warm.mat';
+    'E:\EDA_Process\C_Morlet_SVM\segDataMean\warm\filtermean_warm.mat';
 
 disp('Loading File ...')
 
 warmFile = load(fileName);
-warmFile = warmFile.saveClip2;
+warmFile = warmFile.saveClip3;
 
 mean(warmFile)
 max(warmFile)
 min(abs(warmFile))
 median(abs(warmFile))
 
-for i = 1:length(warmFile)
-    if abs(warmFile(i)) > mean(warmFile)*10
-        warmFile(i) = median(warmFile);
-    end
-    
-end
+% for i = 1:length(warmFile)
+%     if abs(warmFile(i)) > mean(warmFile)*10
+%         warmFile(i) = median(warmFile);
+%     end
+%     
+% end
 
 
-x = reshape(warmFile, 5,8);
-
-plot(x,'*')
+x = reshape(warmFile, 50,8);
+% x = warmFile;
+plot(x(:,8))
 
 %compare intervention means 
 % fileName = ...

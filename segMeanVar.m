@@ -188,14 +188,14 @@ for fileNum = 1: num
 %         close all;
 
         
-%         my_mean1(:,cnt) = mean(target);
+        my_mean1(:,cnt) = mean(target);
         my_mean2(:,cnt) = mean(znormQ);
         my_mean3(:,cnt) = mean(znormFilter);
         
     end
-%     all_mean1(:, fileNum) = mean(my_mean1);
-    all_mean2(:, fileNum) = mean(my_mean2);
-    all_mean3(:, fileNum) = mean(my_mean3);
+    all_mean1(:, fileNum) = my_mean1;
+    all_mean2(:, fileNum) = my_mean2;
+    all_mean3(:, fileNum) = my_mean3;
 %     all_var(:, fileNum) = var(all_mean);
 end
 % id = figure
@@ -612,15 +612,15 @@ for fileNum = 1: num
 %         k
 %         ignore
 
-%         my_mean1(:,cnt) = mean(target);
+        my_mean1(:,cnt) = mean(target);
         my_mean2(:,cnt) = mean(znormQ);
         my_mean3(:,cnt) = mean(znormFilter);
         
     end
     
-%     all_mean1(:, fileNum) = mean(my_mean1);
-    all_mean2(:, fileNum) = mean(my_mean2);
-    all_mean3(:, fileNum) = mean(my_mean3);
+    all_mean1(:, fileNum) = my_mean1;
+    all_mean2(:, fileNum) = my_mean2;
+    all_mean3(:, fileNum) = my_mean3;
         
 end
 % 
